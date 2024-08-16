@@ -82,7 +82,7 @@ function handleAmmunitionFired({ weapon, ammunition, updates }) {
                             "name": ammunition.name,
                             "img": ammunition.img,
                             "id": ammunition.id,
-                            "sourceId": ammunition.sourceId
+                            "uuid": ammunition.uuid
                         }
                     }
                 );
@@ -109,7 +109,7 @@ function handleWeaponDamage({ weapon, updates }) {
 
     if (ammunitionEffect) {
         const effectAmmunition = getFlag(ammunitionEffect, "ammunition");
-        if (weaponAmmunition?.sourceId != effectAmmunition?.sourceId) {
+        if (weaponAmmunition?.uuid != effectAmmunition?.uuid) {
             showWarning("notMatched");
         }
 

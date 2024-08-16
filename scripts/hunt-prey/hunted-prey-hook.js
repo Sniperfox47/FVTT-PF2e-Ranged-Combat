@@ -12,7 +12,7 @@ export function initialiseHuntPrey() {
     HookManager.register(
         "post-action",
         ({ actor, item, result }) => {
-            if (item.sourceId != HUNT_PREY_ACTION_ID) {
+            if (item.uuid != HUNT_PREY_ACTION_ID) {
                 return;
             }
 
@@ -32,29 +32,29 @@ export function initialiseHuntPrey() {
         "CONFIG.PF2E.Item.documentClasses.effect.prototype._preCreate",
         function(wrapper, ...args) {
             const source = args[0];
-            const sourceId = source.flags?.core?.sourceId;
+            const uuid = source.flags?.core?.uuid;
 
-            if (sourceId == HUNTERS_EDGE_PRECISION_EFFECT_ID) {
+            if (uuid == HUNTERS_EDGE_PRECISION_EFFECT_ID) {
                 this._source.system.rules = [HUNT_PREY_RULES, PRECISION_RULES].flat();
             }
 
-            if (sourceId == MASTERFUL_HUNTER_PRECISION_EFFECT_ID) {
+            if (uuid == MASTERFUL_HUNTER_PRECISION_EFFECT_ID) {
                 this._source.system.rules = [HUNT_PREY_RULES, MASTERFUL_HUNTER_RULES, PRECISION_RULES, MASTERFUL_HUNTER_PRECISION_RULES].flat();
             }
 
-            if (sourceId == HUNTERS_EDGE_OUTWIT_EFFECT_ID) {
+            if (uuid == HUNTERS_EDGE_OUTWIT_EFFECT_ID) {
                 this._source.system.rules = [HUNT_PREY_RULES, OUTWIT_RULES].flat();
             }
 
-            if (sourceId == MASTERFUL_HUNTER_OUTWIT_EFFECT_ID) {
+            if (uuid == MASTERFUL_HUNTER_OUTWIT_EFFECT_ID) {
                 this._source.system.rules = [HUNT_PREY_RULES, MASTERFUL_HUNTER_RULES, OUTWIT_RULES, MASTERFUL_HUNTER_OUTWIT_RULES].flat();
             }
 
-            if (sourceId == HUNTERS_EDGE_FLURRY_EFFECT_ID) {
+            if (uuid == HUNTERS_EDGE_FLURRY_EFFECT_ID) {
                 this._source.system.rules = [HUNT_PREY_RULES, FLURRY_RULES].flat();
             }
 
-            if (sourceId == MASTERFUL_HUNTER_FLURRY_EFFECT_ID) {
+            if (uuid == MASTERFUL_HUNTER_FLURRY_EFFECT_ID) {
                 this._source.system.rules = [HUNT_PREY_RULES, MASTERFUL_HUNTER_RULES, FLURRY_RULES, MASTERFUL_HUNTER_FLURRY_RULES].flat();
             }
 
@@ -67,7 +67,7 @@ export function initialiseHuntPrey() {
         "pf2e-ranged-combat",
         "CONFIG.PF2E.Item.documentClasses.effect.prototype._onCreate",
         function(wrapper, ...args) {
-            if (this.sourceId === HUNTED_PREY_EFFECT_ID) {
+            if (this.uuid === HUNTED_PREY_EFFECT_ID) {
                 const sourceActorName = this.actor.name;
                 const sourceActorID = this.actor.id;
                 const targetIds = getFlag(this, "targetIds") ?? [];
@@ -102,7 +102,7 @@ export function initialiseHuntPrey() {
         "pf2e-ranged-combat",
         "CONFIG.PF2E.Item.documentClasses.effect.prototype._onDelete",
         function(wrapper, ...args) {
-            if (this.sourceId === HUNTED_PREY_EFFECT_ID) {
+            if (this.uuid === HUNTED_PREY_EFFECT_ID) {
                 canvas.scene.tokens
                     .map(token => token.actor)
                     .filter(actor => game.user === actor.primaryUpdater)
@@ -110,12 +110,12 @@ export function initialiseHuntPrey() {
                         actor.itemTypes.effect
                             .find(effect => {
                                 // Delete any prey's efffect
-                                if (effect.sourceId === PREY_EFFECT_ID && getFlag(effect, "sourceEffectId") === this.id) {
+                                if (effect.uuid === PREY_EFFECT_ID && getFlag(effect, "sourceEffectId") === this.id) {
                                     return true;
                                 }
 
                                 // Delete any shared prey effects
-                                if (SHARED_PREY_EFFECT_IDS.includes(effect.sourceId) && effect.origin.signature === this.actor.signature) {
+                                if (SHARED_PREY_EFFECT_IDS.includes(effect.uuid) && effect.origin.signature === this.actor.signature) {
                                     return true;
                                 }
 
@@ -135,7 +135,7 @@ export function initialiseHuntPrey() {
         "CONFIG.PF2E.Item.documentClasses.feat.prototype._onCreate",
         function(wrapper, ...args) {
             // If we're creating the Masterful Companion feat, also create the Masterful Animal Companion feat on our animal companion
-            if (this.sourceId == MASTERFUL_COMPANION_RANGER_FEAT_ID) {
+            if (this.uuid == MASTERFUL_COMPANION_RANGER_FEAT_ID) {
                 const animalCompanionId = getFlag(this.actor, "animalCompanionId");
                 const animalCompanion = game.actors.get(animalCompanionId);
                 if (animalCompanion) {
@@ -154,7 +154,7 @@ export function initialiseHuntPrey() {
         "CONFIG.PF2E.Item.documentClasses.feat.prototype._onDelete",
         function(wrapper, ...args) {
             // If we're deleting the Masterful Companion feat, also delete the Masterful Animal Companion feat from our animal companion
-            if (this.sourceId == MASTERFUL_COMPANION_RANGER_FEAT_ID) {
+            if (this.uuid == MASTERFUL_COMPANION_RANGER_FEAT_ID) {
                 const animalCompanionId = getFlag(this.actor, "animalCompanionId");
                 const animalCompanion = game.actors.get(animalCompanionId);
                 if (animalCompanion) {

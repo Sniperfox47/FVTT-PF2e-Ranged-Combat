@@ -57,33 +57,33 @@ export function getControlledActorAndToken() {
  * 
  * @param {PF2eActor} actor
  * @param {string} itemId 
- * @param {string} sourceId
+ * @param {string} uuid
  */
-export function findItemOnActor(actor, itemId, sourceId) {
+export function findItemOnActor(actor, itemId, uuid) {
     return actor.items.find(item => item.id === itemId && !item.isStowed)
-        || actor.items.find(item => item.sourceId === sourceId && !item.isStowed);
+        || actor.items.find(item => item.uuid === uuid && !item.isStowed);
 }
 
 /**
  * Get a specific item from the actor, identified by its source ID
  * 
  * @param {PF2eActor} actor
- * @param {string} sourceId
+ * @param {string} uuid
  */
-export function getItemFromActor(actor, sourceId) {
-    return actor.items.find(item => item.sourceId === sourceId);
+export function getItemFromActor(actor, uuid) {
+    return actor.items.find(item => item.uuid === uuid);
 }
 
 /**
  * Get an effect currently on the actor with the specified source ID and target
  * 
  * @param {PF2eActor} actor
- * @param {string} sourceId
+ * @param {string} uuid
  * @param {string} targetId
  */
-export function getEffectFromActor(actor, sourceId, targetId) {
+export function getEffectFromActor(actor, uuid, targetId) {
     return actor.itemTypes.effect.find(effect =>
-        effect.sourceId === sourceId
+        effect.uuid === uuid
         && getFlag(effect, "targetId") === targetId
         && !effect.isExpired
     );
@@ -96,7 +96,7 @@ export function getEffectFromActor(actor, sourceId, targetId) {
 export async function getItem(id) {
     const source = (await fromUuid(id)).toObject();
     source.flags.core ??= {};
-    source.flags.core.sourceId = id;
+    source.flags.core.uuid = id;
     source._id = randomID();
     return source;
 }

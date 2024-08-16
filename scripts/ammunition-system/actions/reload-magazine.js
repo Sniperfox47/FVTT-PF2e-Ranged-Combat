@@ -76,14 +76,14 @@ export async function performReloadMagazine(actor, token, weapon) {
         const magazineRemaining = getFlag(magazineLoadedEffect, "remaining");
         const magazineCapacity = getFlag(magazineLoadedEffect, "capacity");
 
-        const magazineSourceId = getFlag(magazineLoadedEffect, "ammunitionSourceId");
-        const selectedAmmunitionSourceId = ammo.sourceId;
+        const magazineuuid = getFlag(magazineLoadedEffect, "ammunitionuuid");
+        const selectedAmmunitionuuid = ammo.uuid;
 
-        if (magazineRemaining === magazineCapacity && magazineSourceId === selectedAmmunitionSourceId) {
+        if (magazineRemaining === magazineCapacity && magazineuuid === selectedAmmunitionuuid) {
             // The current magazine is full, and the selected ammunition is the same
             showWarning(format("warningFullyLoaded", { weapon: weapon.name }));
             return;
-        } else if (magazineRemaining === ammo.system.uses.value && magazineSourceId === selectedAmmunitionSourceId) {
+        } else if (magazineRemaining === ammo.system.uses.value && magazineuuid === selectedAmmunitionuuid) {
             // The current magazine is the same, and has the same remaining ammunition, as the new one
             showWarning(format("warningAlreadyMoreAmmo", { weapon: weapon.name, ammo: ammo.name }));
             return;
@@ -107,7 +107,7 @@ export async function performReloadMagazine(actor, token, weapon) {
                 "ammunitionName": ammo.name,
                 "ammunitionImg": ammo.img,
                 "ammunitionItemId": ammo.id,
-                "ammunitionSourceId": ammo.sourceId
+                "ammunitionuuid": ammo.uuid
             }
         }
     );
@@ -115,7 +115,7 @@ export async function performReloadMagazine(actor, token, weapon) {
         magazineLoadedEffectSource,
         {
             "name": `${magazineLoadedEffectSource.name} (${ammo.system.uses.value}/${ammo.system.uses.max})`,
-            "system.description.value": `${magazineLoadedEffectSource.system.description.value}<p>@UUID[${ammo.sourceId}]</p>`
+            "system.description.value": `${magazineLoadedEffectSource.system.description.value}<p>@UUID[${ammo.uuid}]</p>`
         }
     );
 

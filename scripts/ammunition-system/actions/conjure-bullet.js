@@ -62,7 +62,7 @@ export async function performConjureBullet(actor, token, weapon) {
                 name: conjuredRoundSource.name,
                 img: CONJURE_BULLET_IMG,
                 id: CONJURED_ROUND_ITEM_ID,
-                sourceId: CONJURED_ROUND_ITEM_ID
+                uuid: CONJURED_ROUND_ITEM_ID
             },
             updates
         );

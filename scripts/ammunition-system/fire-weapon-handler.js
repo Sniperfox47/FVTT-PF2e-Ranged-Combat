@@ -91,8 +91,8 @@ function fireWeaponRepeating(weapon, updates) {
 
     // Post in chat saying some ammunition was used
     const ammunitionItemId = getFlag(magazineLoadedEffect, "ammunitionItemId");
-    const ammunitionSourceId = getFlag(magazineLoadedEffect, "ammunitionSourceId");
-    const ammunition = findItemOnActor(weapon.actor, ammunitionItemId, ammunitionSourceId);
+    const ammunitionuuid = getFlag(magazineLoadedEffect, "ammunitionuuid");
+    const ammunition = findItemOnActor(weapon.actor, ammunitionItemId, ammunitionuuid);
 
     postAmmunition(
         ammunition,
@@ -209,7 +209,7 @@ function fireWeaponAmmunition(weapon, updates, ammunitionToFire = 1) {
  * @param {Updates} updates
  */
 function consumeAmmunition(weapon, ammunition, updates) {
-    if (ammunition.sourceId === CONJURED_ROUND_ITEM_ID) {
+    if (ammunition.uuid === CONJURED_ROUND_ITEM_ID) {
         consumeConjuredRound(weapon, updates);
     } else {
         removeAmmunitionAdvancedCapacity(weapon.actor, weapon, ammunition, updates);
@@ -246,7 +246,7 @@ function consumeConjuredRound(weapon, updates) {
  * @param {Updates} updates
  */
 function handleFireAmmunition(weapon, ammunition, updates) {
-    const pf2eAmmunition = findItemOnActor(weapon.actor, ammunition.id, ammunition.sourceId);
+    const pf2eAmmunition = findItemOnActor(weapon.actor, ammunition.id, ammunition.uuid);
 
     postAmmunition(
         pf2eAmmunition,

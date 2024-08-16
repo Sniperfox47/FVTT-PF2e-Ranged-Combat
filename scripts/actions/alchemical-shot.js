@@ -24,7 +24,7 @@ export function initialiseAlchemicalShot() {
  * @param {{ actor: PF2eActor, item: PF2eItem, result: {match: boolean} }} params
  */
 function handlePostAction({ actor, item, result }) {
-    if (item.sourceId != ALCHEMICAL_SHOT_FEAT_ID) {
+    if (item.uuid != ALCHEMICAL_SHOT_FEAT_ID) {
         return;
     }
 

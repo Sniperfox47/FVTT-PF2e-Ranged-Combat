@@ -51,7 +51,7 @@ export async function performNextChamber(actor, token, weapon) {
         const chamberLoadedEffect = getEffectFromActor(actor, CHAMBER_LOADED_EFFECT_ID, weapon.id);
         if (chamberLoadedEffect) {
             const chamberAmmunition = getFlag(chamberLoadedEffect, "ammunition");
-            if (chamberAmmunition.sourceId === selectedAmmunition.sourceId) {
+            if (chamberAmmunition.uuid === selectedAmmunition.uuid) {
                 showWarning(format("warningAlreadyLoaded", { weapon: weapon.name, ammunition: selectedAmmunition.name }));
                 return;
             }
@@ -95,7 +95,7 @@ export async function setLoadedChamber(actor, weapon, ammo, updates) {
 
         // If the ammunition we're selecting is already selected, we don't need a new effect
         const ammunition = getFlag(chamberLoadedEffect, "ammunition");
-        if (ammunition.sourceId === ammo.sourceId) {
+        if (ammunition.uuid === ammo.uuid) {
             return;
         }
 
@@ -117,12 +117,12 @@ async function addChamberLoaded(actor, weapon, ammo, updates) {
                 name: ammo.name,
                 img: ammo.img,
                 id: ammo.id,
-                sourceId: ammo.sourceId
+                uuid: ammo.uuid
             }
         };
         chamberLoadedSource.name = `${chamberLoadedSource.name} (${ammo.name})`;
 
-        if (ammo.sourceId === CONJURED_ROUND_ITEM_ID) {
+        if (ammo.uuid === CONJURED_ROUND_ITEM_ID) {
             chamberLoadedSource.system.duration = {
                 expiry: "turn-end",
                 sustained: false,

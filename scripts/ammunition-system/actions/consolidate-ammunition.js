@@ -13,7 +13,7 @@ export async function consolidateRepeatingWeaponAmmunition() {
 
     // Find all the repeating ammunition stacks
     const ammunitionStacks = actor.itemTypes.consumable.filter(consumable => consumable.isAmmo && consumable.system.uses.max > 1);
-    const ammunitionStacksBySourceId = ammunitionStacks.reduce(
+    const ammunitionStacksByuuid = ammunitionStacks.reduce(
         /**
          * @param {Map<string, { stacks: PF2eConsumable[], totalCharges: number}>} map
          * @param {PF2eConsumable} stack
@@ -21,10 +21,10 @@ export async function consolidateRepeatingWeaponAmmunition() {
          * @returns {Map<string, { stacks: PF2eConsumable[], totalCharges: number}>}
          */
         function (map, stack) {
-            const mapEntry = map.get(stack.sourceId);
+            const mapEntry = map.get(stack.uuid);
             if (!mapEntry) {
                 map.set(
-                    stack.sourceId,
+                    stack.uuid,
                     {
                         stacks: [stack],
                         totalCharges: getTotalChargesForStack(stack)
@@ -41,7 +41,7 @@ export async function consolidateRepeatingWeaponAmmunition() {
 
     const updates = new Updates(actor);
 
-    for (const [sourceId, stackEntry] of ammunitionStacksBySourceId) {
+    for (const [uuid, stackEntry] of ammunitionStacksByuuid) {
         const stacks = stackEntry.stacks;
 
         const maxChargesPerItem = stacks[0].system.uses.max;
@@ -85,7 +85,7 @@ export async function consolidateRepeatingWeaponAmmunition() {
         // Make one stack of one item with the remaining charges
         if (remainingCharges) {
             if (index >= stacks.length) {
-                const newStackSource = await getItem(sourceId);
+                const newStackSource = await getItem(uuid);
                 newStackSource.system.quantity = 1;
                 newStackSource.system.uses.value = remainingCharges;
                 updates.create(newStackSource);

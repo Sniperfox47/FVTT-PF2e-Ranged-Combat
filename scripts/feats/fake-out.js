@@ -18,7 +18,7 @@ export function initialiseFakeOut() {
  * @param {{ actor: PF2eActor, item: PF2eItem, result: any }}
  */
 function handlePostAction({ actor, item, result }) {
-    if (item.sourceId != FAKE_OUT_FEAT_ID) {
+    if (item.uuid != FAKE_OUT_FEAT_ID) {
         return;;
     }
 
