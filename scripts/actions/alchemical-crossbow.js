@@ -39,7 +39,7 @@ export async function loadAlchemicalCrossbow() {
         const loadedBombFlags = loadedBombEffect.flags["pf2e-ranged-combat"];
         if (loadedBombFlags.bombCharges > 0) {
             const hasMaxCharges = bombHasMaxCharges(loadedBombFlags);
-            if (loadedBombFlags.bombSourceId === bomb.sourceId && hasMaxCharges) {
+            if (loadedBombFlags.bombuuid === bomb.uuid && hasMaxCharges) {
                 showWarning(format("warningAlreadyLoaded", { token: token.name, weapon: weapon.name, bomb: loadedBombFlags.bombName }));
                 return;
             }
@@ -76,7 +76,7 @@ export async function loadAlchemicalCrossbow() {
         loadedBombEffectSource.flags["pf2e-ranged-combat"],
         {
             bombItemId: bomb.id,
-            bombSourceId: bomb.sourceId,
+            bombuuid: bomb.uuid,
             bombName: bomb.name,
             bombCharges: 3,
             bombMaxCharges: 3,
@@ -229,14 +229,14 @@ function getElementalBomb(actor, token) {
 async function unloadBomb(actor, bombLoadedEffect, updates) {
     const bombLoadedFlags = bombLoadedEffect.flags["pf2e-ranged-combat"];
     if (bombHasMaxCharges(bombLoadedFlags)) {
-        const bombItem = findItemOnActor(actor, bombLoadedFlags.bombItemId, bombLoadedFlags.bombSourceId);
+        const bombItem = findItemOnActor(actor, bombLoadedFlags.bombItemId, bombLoadedFlags.bombuuid);
         if (bombItem) {
             // We found either the original bomb stack or a stack of the same type.
             // Add one to the stack
             updates.update(bombItem, { "system.quantity": bombItem.quantity + 1 });
         } else {
             // Create a new stack containing only this bomb
-            const bombSource = await getItem(bombLoadedFlags.bombSourceId);
+            const bombSource = await getItem(bombLoadedFlags.bombuuid);
             bombSource.system.quantity = 1;
             updates.create(bombSource);
         }

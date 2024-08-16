@@ -32,7 +32,7 @@ export class Migration001MultipleAmmunitions {
                             name: loadedFlags.ammunitionName,
                             img: loadedFlags.ammunitionImg,
                             id: loadedFlags.ammunitionItemId,
-                            sourceId: loadedFlags.ammunitionSourceId
+                            uuid: loadedFlags.ammunitionuuid
                         };
 
                         loadedFlags = {
@@ -53,7 +53,7 @@ export class Migration001MultipleAmmunitions {
                                 name: loadedFlags.ammunitionName,
                                 img: loadedFlags.ammunitionImg,
                                 id: loadedFlags.ammunitionItemId,
-                                sourceId: loadedFlags.ammunitionSourceId
+                                uuid: loadedFlags.ammunitionuuid
                             }
                         };
                     }

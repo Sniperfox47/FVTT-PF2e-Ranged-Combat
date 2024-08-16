@@ -248,7 +248,7 @@ function canReloadMagazine(weapon) {
     const magazineLoadedEffect = getEffectFromActor(weapon.actor, MAGAZINE_LOADED_EFFECT_ID, weapon.id);
     if (magazineLoadedEffect) {
         const magazineLoadedFlags = getFlags(magazineLoadedEffect);
-        if (magazineLoadedFlags.ammunitionSourceId != weapon.ammunition.sourceId) {
+        if (magazineLoadedFlags.ammunitionuuid != weapon.ammunition.uuid) {
             return true;
         }
 

@@ -9,7 +9,7 @@ export class Ammunition {
     id;
 
     /** @type string */
-    sourceId;
+    uuid;
 
     /** @type number */
     quantity;

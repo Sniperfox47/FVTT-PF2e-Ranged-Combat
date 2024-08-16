@@ -154,8 +154,8 @@ export async function unloadMagazine(actor, magazineLoadedEffect, updates) {
         updates.update(ammunitionItem, { "system.quantity": ammunitionItem.quantity + 1 });
     } else if (ammunitionRemaining > 0) {
         // The magazine still has some ammunition left, create a new item with the remaining ammunition
-        const itemSourceId = getFlag(magazineLoadedEffect, "ammunitionSourceId");
-        const ammunitionSource = await getItem(itemSourceId);
+        const itemuuid = getFlag(magazineLoadedEffect, "ammunitionuuid");
+        const ammunitionSource = await getItem(itemuuid);
         ammunitionSource.system.uses.value = ammunitionRemaining;
         updates.create(ammunitionSource);
     }
@@ -189,7 +189,7 @@ export async function unloadAmmunition(actor, weapon, loadedEffect, updates) {
 async function moveAmmunitionToInventory(actor, ammunition, updates) {
     // Try to find either the stack the loaded ammunition came from, or another stack of the same ammunition
     const ammunitionItem = actor.items.find(item => item.id === ammunition.id && !item.isStowed)
-        || actor.items.find(item => item.sourceId === ammunition.sourceId && !item.isStowed);
+        || actor.items.find(item => item.uuid === ammunition.uuid && !item.isStowed);
 
     if (ammunitionItem) {
         // We still have the stack the ammunition originally came from, or another that's the same.
@@ -197,7 +197,7 @@ async function moveAmmunitionToInventory(actor, ammunition, updates) {
         updateAmmunitionQuantity(updates, ammunitionItem, +1);
     } else {
         // Create a new stack with one piece of ammunition in it
-        const ammunitionSource = await getItem(ammunition.sourceId);
+        const ammunitionSource = await getItem(ammunition.uuid);
         ammunitionSource.system.quantity = 1;
         updates.create(ammunitionSource);
     }

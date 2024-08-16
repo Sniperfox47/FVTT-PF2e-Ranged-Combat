@@ -191,7 +191,7 @@ export function removeAmmunitionAdvancedCapacity(actor, weapon, ammunition, upda
 
     loadedFlags.loadedChambers--;
 
-    const loadedAmmunition = loadedFlags.ammunition.find(ammunitionType => ammunitionType.sourceId === ammunition.sourceId);
+    const loadedAmmunition = loadedFlags.ammunition.find(ammunitionType => ammunitionType.uuid === ammunition.uuid);
     loadedAmmunition.quantity--;
     if (loadedAmmunition.quantity === 0) {
         loadedFlags.ammunition.findSplice(ammunition => ammunition.id === loadedAmmunition.id);
@@ -220,7 +220,7 @@ export function clearLoadedChamber(weapon, ammunition, updates) {
     if (chamberLoadedEffect) {
         if (ammunition) {
             const chamberAmmunition = getFlag(chamberLoadedEffect, "ammunition");
-            if (chamberAmmunition.sourceId === ammunition.sourceId) {
+            if (chamberAmmunition.uuid === ammunition.uuid) {
                 updates.delete(chamberLoadedEffect);
             }
         } else {
@@ -274,7 +274,7 @@ export function buildLoadedEffectDescription(loadedEffect) {
     const capacityLoaded = loaded;
 
     return capacityLoaded.ammunition
-        .map(ammunition => `<p>@UUID[${ammunition.sourceId}] x${ammunition.quantity}</p>`)
+        .map(ammunition => `<p>@UUID[${ammunition.uuid}] x${ammunition.quantity}</p>`)
         .reduce(
             (previous, current) => previous + current,
             capacityLoaded.originalDescription ?? loadedEffect.system.description.value

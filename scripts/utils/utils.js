@@ -57,11 +57,11 @@ export function getControlledActorAndToken() {
  * 
  * @param {PF2eActor} actor
  * @param {string} itemId 
- * @param {string} sourceId
+ * @param {string} uuid
  */
-export function findItemOnActor(actor, itemId, sourceId) {
+export function findItemOnActor(actor, itemId, uuid) {
     return actor.items.find(item => item.id === itemId && !item.isStowed)
-        || actor.items.find(item => item.sourceId === sourceId && !item.isStowed);
+        || actor.items.find(item => item.uuid === uuid && !item.isStowed);
 }
 
 /**

@@ -51,7 +51,7 @@ export async function performNextChamber(actor, token, weapon) {
         const chamberLoadedEffect = getEffectFromActor(actor, CHAMBER_LOADED_EFFECT_ID, weapon.id);
         if (chamberLoadedEffect) {
             const chamberAmmunition = getFlag(chamberLoadedEffect, "ammunition");
-            if (chamberAmmunition.sourceId === selectedAmmunition.sourceId) {
+            if (chamberAmmunition.uuid === selectedAmmunition.uuid) {
                 showWarning(format("warningAlreadyLoaded", { weapon: weapon.name, ammunition: selectedAmmunition.name }));
                 return;
             }
@@ -95,7 +95,7 @@ export async function setLoadedChamber(actor, weapon, ammo, updates) {
 
         // If the ammunition we're selecting is already selected, we don't need a new effect
         const ammunition = getFlag(chamberLoadedEffect, "ammunition");
-        if (ammunition.sourceId === ammo.sourceId) {
+        if (ammunition.uuid === ammo.uuid) {
             return;
         }
 

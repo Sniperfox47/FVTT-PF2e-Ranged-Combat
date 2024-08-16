@@ -3,7 +3,7 @@ export class PF2eItem {
     id;
 
     /** @type string */
-    sourceId;
+    uuid;
 
     /** @type boolean */
     isStowed;

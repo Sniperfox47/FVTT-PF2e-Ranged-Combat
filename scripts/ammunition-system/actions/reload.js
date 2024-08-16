@@ -155,7 +155,7 @@ export async function performReload(actor, token, weapon, updates, options = {})
                 const loadedAmmunitions = loaded.ammunition;
 
                 // Try to find ammunition of the same type already loaded. If we find any, add to it, otherwise create a new one.
-                let loadedAmmunition = loadedAmmunitions.find(ammunition => ammunition.sourceId === ammo.sourceId);
+                let loadedAmmunition = loadedAmmunitions.find(ammunition => ammunition.uuid === ammo.uuid);
                 if (loadedAmmunition) {
                     loadedAmmunition.quantity += numRoundsToLoad;
                 } else {
@@ -163,7 +163,7 @@ export async function performReload(actor, token, weapon, updates, options = {})
                         name: ammo.name,
                         img: ammo.img,
                         id: ammo.id,
-                        sourceId: ammo.sourceId,
+                        uuid: ammo.uuid,
                         quantity: numRoundsToLoad,
                     };
                     loadedAmmunitions.push(loadedAmmunition);
@@ -206,7 +206,7 @@ export async function performReload(actor, token, weapon, updates, options = {})
                                 name: ammo.name,
                                 img: ammo.img,
                                 id: ammo.id,
-                                sourceId: ammo.sourceId,
+                                uuid: ammo.uuid,
                                 quantity: numRoundsToLoad
                             }
                         ],
@@ -248,7 +248,7 @@ export async function performReload(actor, token, weapon, updates, options = {})
             } else if (loadedEffect) {
                 // If the selected ammunition is the same as what's already loaded, don't reload
                 const loadedAmmunition = getFlag(loadedEffect, "ammunition");
-                if (ammo.sourceId === loadedAmmunition.sourceId) {
+                if (ammo.uuid === loadedAmmunition.uuid) {
                     showWarning(format("warningAlreadyLoadedWithAmmo", { weapon: weapon.name, ammo: ammo.name }));
                     return;
                 }
@@ -260,7 +260,7 @@ export async function performReload(actor, token, weapon, updates, options = {})
             updates.create(loadedEffectSource);
 
             setEffectTarget(loadedEffectSource, weapon);
-            loadedEffectSource.system.description.value += `<p>@UUID[${ammo.sourceId}]</p>`;
+            loadedEffectSource.system.description.value += `<p>@UUID[${ammo.uuid}]</p>`;
 
             mergeObject(
                 loadedEffectSource.flags["pf2e-ranged-combat"],
@@ -269,7 +269,7 @@ export async function performReload(actor, token, weapon, updates, options = {})
                         name: ammo.name,
                         img: ammo.img,
                         id: ammo.id,
-                        sourceId: ammo.sourceId
+                        uuid: ammo.uuid
                     }
                 }
             );
